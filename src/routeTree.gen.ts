@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as KidIndexRouteImport } from './routes/kid/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as KidLoginRouteImport } from './routes/kid/login'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminChildrenIdRouteImport } from './routes/admin/children.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KidIndexRoute = KidIndexRouteImport.update({
+  id: '/kid/',
+  path: '/kid/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KidLoginRoute = KidLoginRouteImport.update({
+  id: '/kid/login',
+  path: '/kid/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminChildrenIdRoute = AdminChildrenIdRouteImport.update({
+  id: '/admin/children/$id',
+  path: '/admin/children/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/kid/login': typeof KidLoginRoute
+  '/admin/': typeof AdminIndexRoute
+  '/kid/': typeof KidIndexRoute
+  '/admin/children/$id': typeof AdminChildrenIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/kid/login': typeof KidLoginRoute
+  '/admin': typeof AdminIndexRoute
+  '/kid': typeof KidIndexRoute
+  '/admin/children/$id': typeof AdminChildrenIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/kid/login': typeof KidLoginRoute
+  '/admin/': typeof AdminIndexRoute
+  '/kid/': typeof KidIndexRoute
+  '/admin/children/$id': typeof AdminChildrenIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin/login'
+    | '/kid/login'
+    | '/admin/'
+    | '/kid/'
+    | '/admin/children/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin/login'
+    | '/kid/login'
+    | '/admin'
+    | '/kid'
+    | '/admin/children/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin/login'
+    | '/kid/login'
+    | '/admin/'
+    | '/kid/'
+    | '/admin/children/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  KidLoginRoute: typeof KidLoginRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  KidIndexRoute: typeof KidIndexRoute
+  AdminChildrenIdRoute: typeof AdminChildrenIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +117,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kid/': {
+      id: '/kid/'
+      path: '/kid'
+      fullPath: '/kid/'
+      preLoaderRoute: typeof KidIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kid/login': {
+      id: '/kid/login'
+      path: '/kid/login'
+      fullPath: '/kid/login'
+      preLoaderRoute: typeof KidLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/children/$id': {
+      id: '/admin/children/$id'
+      path: '/admin/children/$id'
+      fullPath: '/admin/children/$id'
+      preLoaderRoute: typeof AdminChildrenIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  KidLoginRoute: KidLoginRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  KidIndexRoute: KidIndexRoute,
+  AdminChildrenIdRoute: AdminChildrenIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

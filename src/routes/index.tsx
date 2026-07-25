@@ -6,8 +6,8 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Armoney — Banco digital das crianças" },
       { name: "description", content: "Cadastre crianças, gerencie saldos e metas em um app colorido e seguro." },
-      { property: "og:title", content: "Armoney" },
-      { property: "og:description", content: "O banco digital infantil comandado pelo administrador." },
+      { property: "og:title", content: "Armoney — Banco digital das crianças" },
+      { property: "og:description", content: "Cadastre crianças, gerencie saldos e metas em um app colorido e seguro." },
     ],
   }),
   component: Landing,

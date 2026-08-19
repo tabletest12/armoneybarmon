@@ -139,4 +139,8 @@
 @utility shadow-card { box-shadow: var(--shadow-card); }
 
 @keyframes float-slow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
-@utility animate-float { animation: float-slow 4s ease-in-out infinite; }
+@utility animate-float { animation: float-slow 4s ease-in-out infinite;
+                       #lovable-badge { 
+  display: none !important; 
+}}
+
